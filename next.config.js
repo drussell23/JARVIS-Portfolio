@@ -5,10 +5,6 @@ const nextConfig = {
     domains: ['localhost'],
     formats: ['image/avif', 'image/webp'],
   },
-  // Enable experimental features for better performance
-  experimental: {
-    optimizeCss: true,
-  },
 }
 
 module.exports = nextConfig

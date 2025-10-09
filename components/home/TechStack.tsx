@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import {
   SiPython, SiTypescript, SiRust, SiSwift, SiReact, SiNextdotjs,
-  SiFastapi, SiTailwindcss, SiWebsocket, SiDocker
+  SiFastapi, SiTailwindcss, SiSocketdotio, SiDocker
 } from 'react-icons/si'
 
 const techStack = [
@@ -15,7 +15,7 @@ const techStack = [
   { name: 'Next.js', icon: SiNextdotjs, color: '#000000', category: 'Framework' },
   { name: 'FastAPI', icon: SiFastapi, color: '#009688', category: 'API' },
   { name: 'Tailwind', icon: SiTailwindcss, color: '#06B6D4', category: 'Styling' },
-  { name: 'WebSocket', icon: SiWebsocket, color: '#010101', category: 'Real-time' },
+  { name: 'WebSocket', icon: SiSocketdotio, color: '#010101', category: 'Real-time' },
   { name: 'Docker', icon: SiDocker, color: '#2496ED', category: 'Deploy' },
 ]
 
