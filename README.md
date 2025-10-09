@@ -1,97 +1,74 @@
 # JARVIS AI
 
-> **"Hey JARVIS" - and it responds.**
-> Your personal AI assistant that actually sees, hears, and understands.
+> **A voice-controlled AI assistant for macOS that sees your screen, understands context, and helps you work smarter.**
 
-I built JARVIS because I wanted an AI assistant that *just works*. Not one that needs perfect conditions or scripted commands - one that adapts to you, learns from context, and handles the messy reality of everyday computing.
+Say "Hey JARVIS" and it responds. Like Iron Man's assistant, but real - and optimized for Apple Silicon.
 
-**Live Demo**: [jarvis-portfolio.vercel.app](https://jarvis-portfolio-kyko2n4hg-derek-russells-projects-090370ad.vercel.app)
-
-<br/>
-
-## What Makes JARVIS Different?
-
-### It sees your screen
-JARVIS knows what you're looking at - whether it's a software update notification, an error message, or a document you're working on.
-
-### It understands context
-Screen locked? JARVIS unlocks it before opening Safari. Multiple tabs open? It knows which browser you're using. This isn't rigid automation - it's intelligence.
-
-### It actually works
-From 80-100% CPU usage down to 1-5%. With self-healing systems that automatically recover from failures. I didn't just build features - I built a system that solves real problems.
+**Portfolio**: [jarvis-portfolio.vercel.app](https://jarvis-portfolio-kyko2n4hg-derek-russells-projects-090370ad.vercel.app)
 
 <br/>
 
-## The Real Numbers
+## What It Does
 
-| Metric | Achievement |
-|--------|------------|
-| **CPU Usage** | 95% reduction (80-100% → 1-5%) |
-| **ML Accuracy** | 99.9% intent classification |
-| **Response Time** | <50ms (faster than you can blink) |
-| **Self-Healing** | Automatic recovery from component failures |
+**Voice Control** - Hands-free operation with natural language. No memorizing commands.
 
-> These aren't marketing numbers. They're verified metrics from the actual codebase.
+**Computer Vision** - Monitors your screen in real-time. Detects notifications, errors, and updates across all apps.
+
+**Context Awareness** - Understands your workflow. Screen locked? JARVIS unlocks it before executing your command.
+
+**Automation** - Controls browsers, apps, and system functions. Multi-step workflows from a single voice command.
+
+**Proactive Intelligence** - Alerts you to important information without being asked. Helps you prepare for meetings, catch errors, and stay focused.
 
 <br/>
 
-## The Engineering Story
+## Performance
 
-Building JARVIS meant solving real problems:
+- **95% CPU reduction** - From 80-100% down to 1-5%
+- **99.9% ML accuracy** - Intent classification that actually works
+- **<50ms response** - Real-time command routing
+- **Self-healing** - Automatic recovery from failures
 
-#### CPU Optimization
-How do you go from a system that maxes out your CPU to one that uses less than your music player?
+<br/>
 
-#### ML Routing
-How do you build a classifier that adapts instead of breaking every time someone phrases a command differently?
+## How It Works
 
-#### Self-Healing
-What happens when a Rust component crashes at 3 AM? It switches to Python automatically, fixes itself, and switches back.
+**Custom ARM64 Assembly** - Hand-optimized NEON code for Apple Silicon (M1/M2/M3). 40-50x faster than standard implementations.
 
-#### Context Awareness
-Your screen is locked and you say "open Safari" - should it fail? Or unlock the screen first?
+**ML-Powered Routing** - Intelligent intent prediction. Adapts to how you speak, not hardcoded patterns.
 
-#### Computer Vision
-How do you teach an AI to *see* software updates, error messages, and UI changes across any application?
+**Vision Intelligence** - Uses Claude AI to analyze screen content. Works with ANY app through visual understanding, not API integrations.
 
-I wrote about all of this. The wins, the failures, the 2 AM debugging sessions. Real engineering, real solutions.
+**Zero Configuration** - Autonomous service discovery. Self-healing with automatic error recovery.
 
 <br/>
 
 ## Tech Stack
 
-| Category | Technologies |
-|----------|-------------|
-| **Languages** | Python • TypeScript • Rust • Swift |
-| **AI** | Claude (Anthropic) • CoreML • Custom ML models |
-| **Performance** | ARM64 NEON Assembly • Async pipelines • WebSocket |
-| **Architecture** | FastAPI • Event-driven • Self-healing • Zero-downtime fallbacks |
+**Languages** - Python • TypeScript • Rust • Swift
+
+**AI** - Claude (Anthropic) • CoreML • Custom ML models
+
+**Architecture** - FastAPI • Event-driven • Self-healing systems
 
 <br/>
 
-## Why This Exists
+## About This Portfolio
 
-The actual JARVIS code is private. But the engineering problems I solved? Those are worth sharing.
+JARVIS is a personal project I built for my own use. The code is private, but I wrote about the engineering challenges and solutions.
 
-**This portfolio is for:**
-- Engineers who want to see how real AI systems are built
-- People curious about what it takes to make AI actually useful
-- Anyone who's ever wondered "how would I build that?"
+Read the technical blog posts to see how I:
+- Optimized CPU usage from 80-100% down to 1-5%
+- Built ML routing with 99.9% accuracy
+- Created self-healing systems for zero-downtime operation
+- Implemented context-aware intelligence and computer vision
 
-> **Note**: JARVIS is a personal project built for my own use. Features like automated screen unlocking are designed for single-user, personal environments and would not be included in any public release.
+> **Note**: Features like automated screen unlocking are designed for single-user, personal environments and would not be included in any public release.
 
 <br/>
 
 ## Connect
 
-Built something cool? Want to talk AI systems? Let's connect.
-
 - **GitHub**: [@drussell23](https://github.com/drussell23)
 - **LinkedIn**: [Derek J. Russell](https://www.linkedin.com/in/derek-j-russell/)
 - **Email**: djamesr23@gmail.com
-
-<br/>
-
----
-
-*This portfolio was built with Next.js. JARVIS was built with coffee, determination, and way too many debugging sessions.*
