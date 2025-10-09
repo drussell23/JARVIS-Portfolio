@@ -135,6 +135,39 @@ export default function AboutPage() {
             </ul>
           </section>
 
+          {/* About Me */}
+          <section className="mb-12">
+            <h2 className="text-3xl font-bold text-white mb-4">About Me</h2>
+            <p className="text-dark-text leading-relaxed mb-4">
+              I'm Derek Russell, an AI engineer and computer engineering graduate from Cal Poly. My journey
+              to engineering wasn't conventional - it took 10 years, multiple setbacks, and an unwavering
+              commitment to never give up.
+            </p>
+            <p className="text-dark-text leading-relaxed mb-4">
+              I started at Cal State East Bay in 2013, but after struggling academically, I had to restart
+              at community college. I went from pre-college algebra through seven different math classes,
+              learning to adapt and persist through challenges. Every struggle became part of what makes
+              my story unique.
+            </p>
+            <p className="text-dark-text leading-relaxed mb-4">
+              Today, I build AI systems that solve real problems. JARVIS represents years of learning,
+              failing, and persevering - the same mindset that got me through my engineering degree.
+            </p>
+            <div className="mt-6">
+              <a
+                href="https://mustangnews.net/10-years-in-the-making-one-cal-poly-students-unique-path-to-an-engineering-degree/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-jarvis-blue hover:text-jarvis-cyan transition-colors"
+              >
+                <span className="font-medium">Read my story in Mustang News</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            </div>
+          </section>
+
           {/* Personal Note */}
           <section className="bg-dark-card border border-dark-border rounded-lg p-8">
             <h2 className="text-2xl font-bold text-white mb-4">A Personal Project</h2>
