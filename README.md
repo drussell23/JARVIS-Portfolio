@@ -78,6 +78,8 @@ The actual JARVIS code is private. But the engineering problems I solved? Those 
 - People curious about what it takes to make AI actually useful
 - Anyone who's ever wondered "how would I build that?"
 
+> **Note**: JARVIS is a personal project built for my own use. Features like automated screen unlocking are designed for single-user, personal environments and would not be included in any public release.
+
 <br/>
 
 ## Connect
