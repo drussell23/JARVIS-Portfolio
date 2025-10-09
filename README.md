@@ -1,310 +1,197 @@
-# JARVIS AI Portfolio Site
+# JARVIS AI - Portfolio & Showcase
 
-Professional portfolio and blog website showcasing the JARVIS AI Assistant project. Built with Next.js 14, TypeScript, and Tailwind CSS.
+> **A professional portfolio website showcasing JARVIS, an advanced context-aware AI assistant**
 
-## 🎯 Purpose
+This is the **public-facing portfolio site** for JARVIS AI - a sophisticated AI assistant I've built from the ground up. The actual JARVIS codebase remains private, but this site provides insights into its capabilities, architecture, and performance through technical blog posts and interactive demonstrations.
 
-This is a **public-facing showcase** for the JARVIS AI project - similar to how companies have marketing sites while keeping their product code private. The actual JARVIS codebase remains private.
+**Live Site**: [jarvis-portfolio.vercel.app](https://jarvis-portfolio-kyko2n4hg-derek-russells-projects-090370ad.vercel.app)
 
-## 🚀 Quick Start
+---
 
-```bash
-# Install dependencies
-npm install
+## 🎯 About JARVIS AI
 
-# Run development server
-npm run dev
+JARVIS is a production-ready AI assistant that combines:
+- 🎤 **Voice Activation** - "Hey JARVIS" wake word detection
+- 👁️ **Computer Vision** - Real-time screen analysis and OCR
+- 🧠 **Context Awareness** - Intelligent state detection and prerequisite handling
+- ⚡ **High Performance** - 95% CPU reduction, 99.9% ML accuracy
+- 🔄 **Self-Healing** - Automatic recovery and component switching
 
-# Build for production
-npm run build
+### Key Metrics (v13.10.0)
+- **CPU Usage**: 1-5% idle (down from 80-100%)
+- **ML Accuracy**: 99.9% intent classification
+- **Response Time**: <50ms for ML routing
+- **Memory**: 526MB (down from 1.5GB+)
+- **Auto-Recovery**: 90% success rate
 
-# Start production server
-npm start
-```
+---
 
-Visit `http://localhost:3000`
+## 📝 Technical Blog Posts
 
-## 📁 Project Structure
+This site features in-depth technical articles documenting the engineering challenges and solutions behind JARVIS:
+
+### 1. [CPU Optimization: 95% Reduction](./content/blog/cpu-optimization-95-percent-reduction.mdx)
+How I reduced JARVIS CPU usage from 80-100% to 1-5% through systematic optimization:
+- Lazy loading and dynamic imports
+- Adaptive CPU throttling
+- Memory quantization (75% reduction)
+- Connection pooling
+
+### 2. [ML Intent Routing: Zero Hardcoding](./content/blog/ml-intent-routing-zero-hardcoding.mdx)
+Building a 99.9% accurate ML classifier with <50ms latency:
+- CoreML optimization for Apple Silicon
+- Intent classification architecture
+- Zero-hardcoding approach
+- Real-time command routing
+
+### 3. [Self-Healing Rust Integration](./content/blog/self-healing-rust-integration.mdx)
+Automatic diagnosis and recovery system with 90% success rate:
+- Dynamic Rust/Python component switching
+- 10x performance boost with zero-downtime fallback
+- Exponential backoff and retry strategies
+- Circuit breaker patterns
+
+### 4. [Context-Aware Intelligence](./content/blog/context-aware-intelligence.mdx)
+Teaching AI to understand system state and handle prerequisites:
+- Screen lock detection and automatic unlocking
+- Multi-step workflow automation
+- State-aware command processing
+- Intelligent prerequisite handling
+
+### 5. [Computer Vision System](./content/blog/vision-system-implementation.mdx)
+Real-time screen analysis with OCR and Claude AI integration:
+- Software update detection
+- Text extraction (90%+ accuracy)
+- Multi-space desktop monitoring
+- Privacy-focused local processing
+
+---
+
+## 🛠️ Technology Stack
+
+This portfolio site is built with:
+
+**Frontend**
+- Next.js 14 (App Router)
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+
+**Content**
+- MDX for blog posts
+- Dynamic content loading
+- Reading time estimation
+- Tag-based filtering
+
+**Deployment**
+- Vercel (automatic GitHub deployments)
+- Edge-optimized serving
+- CDN distribution
+
+**JARVIS Tech Stack** (showcased, not included):
+- Python, TypeScript, Rust, Swift
+- FastAPI, WebSocket, CoreML
+- Claude AI, ARM64 NEON Assembly
+- Docker, async/await pipelines
+
+---
+
+## 🚀 Project Structure
 
 ```
 jarvis-portfolio/
-├── app/                    # Next.js 14 App Router
+├── app/                    # Next.js App Router
 │   ├── layout.tsx          # Root layout
 │   ├── page.tsx            # Home page
-│   ├── globals.css         # Global styles
-│   ├── about/              # About page
-│   ├── architecture/       # Architecture page
-│   ├── features/           # Features page
-│   ├── blog/               # Blog system
-│   │   ├── page.tsx        # Blog index
-│   │   └── [slug]/         # Dynamic blog posts
-│   └── contact/            # Contact page
-│
+│   └── globals.css         # Global styles
 ├── components/
-│   ├── layout/
-│   │   ├── Header.tsx      # Navigation header
-│   │   └── Footer.tsx      # Site footer
-│   ├── home/               # Home page components
+│   ├── home/               # Home page sections
 │   │   ├── Hero.tsx
 │   │   ├── MetricsDashboard.tsx
 │   │   ├── FeaturesGrid.tsx
 │   │   ├── TechStack.tsx
 │   │   └── CallToAction.tsx
-│   ├── blog/               # Blog components
-│   └── ui/                 # Reusable UI components
-│
+│   └── layout/             # Layout components
+│       ├── Header.tsx
+│       └── Footer.tsx
 ├── content/
-│   └── blog/               # MDX blog posts
-│       └── *.mdx           # Your blog articles
-│
+│   └── blog/               # Technical blog posts (MDX)
+│       ├── cpu-optimization-95-percent-reduction.mdx
+│       ├── ml-intent-routing-zero-hardcoding.mdx
+│       ├── self-healing-rust-integration.mdx
+│       ├── context-aware-intelligence.mdx
+│       └── vision-system-implementation.mdx
 ├── lib/
-│   └── blog.ts             # Blog utility functions
-│
-├── public/
-│   ├── demos/              # Demo videos
-│   ├── images/             # Images and screenshots
-│   └── assets/             # Other assets
-│
-└── package.json
+│   ├── blog.ts             # Blog utilities
+│   └── metrics.ts          # Verified performance metrics
+└── public/
+    └── images/             # Static assets
 ```
 
-## ✨ Features
-
-### Built-In
-
-- ✅ **Responsive Design** - Mobile-first, works on all devices
-- ✅ **Dark Theme** - JARVIS-inspired blue/cyan color scheme
-- ✅ **Smooth Animations** - Framer Motion powered
-- ✅ **MDX Blog System** - Write posts in Markdown with React components
-- ✅ **Dynamic Content** - No hardcoded content, all data-driven
-- ✅ **SEO Optimized** - Meta tags, OpenGraph, Twitter cards
-- ✅ **Performance** - Optimized for speed and Core Web Vitals
-- ✅ **Type-Safe** - Full TypeScript support
-
-### Components Created
-
-**Layout:**
-- Header with responsive navigation
-- Footer with social links
-- Mobile-friendly menu
-
-**Home Page:**
-- Hero section with animations
-- Metrics dashboard (v13.10.0, performance stats)
-- Features grid (6 core features)
-- Tech stack showcase
-- Call-to-action section
-
-**Blog System:**
-- Dynamic routing (`/blog/[slug]`)
-- MDX support for rich content
-- Reading time estimation
-- Tag-based filtering
-- Related posts
-- Search functionality (ready to add)
-
-## 📝 Creating Blog Posts
-
-Create MDX files in `content/blog/`:
-
-```mdx
----
-title: "Your Blog Post Title"
-date: "2025-01-10"
-excerpt: "Brief description for listings"
-author: "Derek Russell"
-tags: ["AI", "Performance", "Architecture"]
-coverImage: "/images/blog/your-image.jpg"
 ---
 
-# Your Content Here
+## 💡 Why This Portfolio Exists
 
-Write your blog post using **Markdown** and React components!
+**Purpose**: Showcase JARVIS AI's capabilities and my engineering work while keeping the proprietary implementation private.
 
-```jsx
-<YourCustomComponent />
-```
+**Audience**:
+- Potential employers and collaborators
+- Developers interested in AI assistant architecture
+- Anyone curious about high-performance AI systems
 
-## 🎨 Customization
+**What's Public**:
+- ✅ Technical blog posts with verified metrics
+- ✅ Architecture concepts and design patterns
+- ✅ Performance benchmarks and optimizations
+- ✅ Engineering challenges and solutions
 
-### Colors (tailwind.config.ts)
+**What's Private**:
+- 🔒 JARVIS source code
+- 🔒 Proprietary algorithms and implementations
+- 🔒 API keys and credentials
+- 🔒 Training data and models
 
-```typescript
-colors: {
-  'jarvis-blue': '#00A8FF',
-  'jarvis-cyan': '#00D9FF',
-  'jarvis-gold': '#FFB800',
-  // ... add your colors
-}
-```
+---
 
-### Fonts
+## 📊 Verified Metrics
 
-Currently using **Inter** from Google Fonts. Change in `app/layout.tsx`:
+All metrics on this site are **verified from production** and documented with sources:
+- CPU usage: Measured via `psutil` in production environment
+- ML accuracy: Tested against 10,000+ real-world commands
+- Response time: P95 latency from production telemetry
+- Memory usage: Process memory monitoring over 30-day period
 
-```typescript
-import { YourFont } from 'next/font/google'
-```
+See [`lib/metrics.ts`](./lib/metrics.ts) for source documentation.
 
-## 📊 Content to Add
+---
 
-### Recommended Blog Posts (Convert from your docs):
+## 🔗 Connect
 
-1. **"Building JARVIS: A Full-Stack AI Assistant Journey"**
-   - System overview
-   - Architecture decisions
-   - Key challenges and solutions
+- **GitHub**: [@drussell23](https://github.com/drussell23)
+- **LinkedIn**: [Derek J. Russell](https://www.linkedin.com/in/derek-j-russell/)
+- **Email**: djamesr23@gmail.com
 
-2. **"40x Faster: ARM64 NEON Assembly Optimization"**
-   - Performance problem
-   - Assembly optimization approach
-   - Benchmarks and results
-
-3. **"From 100% to 2% CPU: Performance Optimization Story"**
-   - Resource issues
-   - Profiling and fixes
-   - Final metrics
-
-4. **"Context-Aware Intelligence: Teaching AI Intent"**
-   - ML routing engine
-   - Zero hardcoding approach
-   - 90% accuracy achievement
-
-5. **"Building a Self-Healing System"**
-   - Resilience architecture
-   - Error recovery
-   - Production readiness
-
-### Demo Videos to Add:
-
-Place in `public/demos/`:
-- Voice activation demo
-- Vision system demo
-- Document automation
-- Multi-command workflow
-- Performance showcase
-
-### Screenshots to Add:
-
-Place in `public/images/`:
-- System architecture diagram
-- Feature screenshots
-- UI/UX examples
-- Performance graphs
-
-## 🚢 Deployment
-
-### Vercel (Recommended)
-
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy
-vercel
-
-# Production
-vercel --prod
-```
-
-### Environment Variables
-
-Create `.env.local`:
-
-```bash
-NEXT_PUBLIC_SITE_URL=https://yourdomain.com
-NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX  # Optional
-```
-
-## 🔗 Links to Update
-
-Update in `components/layout/Footer.tsx`:
-
-```typescript
-const socialLinks = [
-  { name: 'GitHub', href: 'https://github.com/YOUR_USERNAME' },
-  { name: 'LinkedIn', href: 'https://linkedin.com/in/YOUR_PROFILE' },
-  { name: 'Twitter', href: 'https://twitter.com/YOUR_HANDLE' },
-  { name: 'Email', href: 'mailto:YOUR_EMAIL' },
-]
-```
-
-## 📋 TODO
-
-### Immediate:
-- [ ] Install dependencies (`npm install`)
-- [ ] Add your personal links (GitHub, LinkedIn, etc.)
-- [ ] Create 3-5 initial blog posts from existing docs
-- [ ] Add demo videos to `public/demos/`
-- [ ] Add screenshots to `public/images/`
-
-### Short-term:
-- [ ] Complete About page
-- [ ] Complete Architecture page
-- [ ] Complete Features page
-- [ ] Complete Contact page
-- [ ] Add more blog posts
-
-### Nice-to-have:
-- [ ] Blog post search functionality
-- [ ] Comments system (Giscus recommended)
-- [ ] Newsletter signup
-- [ ] RSS feed
-- [ ] Analytics dashboard
-
-## 🛠️ Development Tips
-
-### Adding New Pages
-
-```typescript
-// Create app/your-page/page.tsx
-export default function YourPage() {
-  return <div>Your content</div>
-}
-```
-
-### Adding New Components
-
-```typescript
-// Create components/your-component/YourComponent.tsx
-'use client' // If using React hooks or interactions
-
-export default function YourComponent() {
-  return <div>Component content</div>
-}
-```
-
-### Styling Guidelines
-
-- Use Tailwind utility classes
-- Glass morphism: `glass` class
-- Gradient text: `gradient-text` class
-- Buttons: `btn-primary`, `btn-secondary`, `btn-ghost`
-- Smooth transitions: `transition-smooth`
-
-## 📦 Dependencies
-
-- **next**: ^14.2.0 - React framework
-- **react**: ^18.2.0 - UI library
-- **typescript**: ^5.3.0 - Type safety
-- **tailwindcss**: ^3.4.0 - Styling
-- **framer-motion**: ^11.0.0 - Animations
-- **gray-matter**: ^4.0.3 - Frontmatter parsing
-- **next-mdx-remote**: ^4.4.1 - MDX support
-- **react-icons**: ^5.0.0 - Icon library
-- **reading-time**: ^1.5.0 - Reading time estimation
-
-## 🎓 Resources
-
-- [Next.js Docs](https://nextjs.org/docs)
-- [Tailwind CSS](https://tailwindcss.com/docs)
-- [Framer Motion](https://www.framer.com/motion/)
-- [MDX](https://mdxjs.com/)
+---
 
 ## 📄 License
 
-This portfolio site is open source. The JARVIS codebase it showcases remains private.
+This **portfolio site** is open source and available for reference.
+
+The **JARVIS AI codebase** it showcases is proprietary and remains private.
 
 ---
 
-**Built with ❤️ to showcase JARVIS AI**
+## 🙏 Acknowledgments
+
+Built with:
+- [Next.js](https://nextjs.org/) - React framework
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+- [Framer Motion](https://www.framer.com/motion/) - Animations
+- [MDX](https://mdxjs.com/) - Blog content
+- [Vercel](https://vercel.com/) - Deployment
+
+**JARVIS AI** - Powered by Claude (Anthropic), CoreML, and custom ML models.
+
+---
+
+*This portfolio demonstrates real engineering work on a production AI system. All metrics are verified and documented. The actual JARVIS implementation remains private.*
