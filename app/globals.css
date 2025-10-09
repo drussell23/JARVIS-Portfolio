@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --jarvis-blue: #00A8FF;
+    --jarvis-cyan: #00D9FF;
+    --jarvis-gold: #FFB800;
+  }
+
+  * {
+    @apply border-dark-border;
+  }
+
+  body {
+    @apply bg-dark-bg text-white antialiased;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  /* Glass morphism effect */
+  .glass {
+    @apply bg-dark-card/50 backdrop-blur-xl border border-dark-border/30;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-jarvis-blue via-jarvis-cyan to-jarvis-blue bg-clip-text text-transparent;
+  }
+
+  /* Glow effect */
+  .glow-blue {
+    box-shadow: 0 0 30px rgba(0, 168, 255, 0.3);
+  }
+
+  /* Code block styling */
+  .prose pre {
+    @apply bg-dark-card border border-dark-border rounded-lg p-4 overflow-x-auto;
+  }
+
+  .prose code {
+    @apply text-jarvis-cyan font-mono text-sm;
+  }
+
+  /* Smooth transitions */
+  .transition-smooth {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  /* Button styles */
+  .btn-primary {
+    @apply px-6 py-3 bg-jarvis-blue hover:bg-jarvis-deep text-white font-semibold rounded-lg transition-smooth hover:shadow-lg hover:shadow-jarvis-blue/50;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 bg-dark-card hover:bg-dark-border text-white font-semibold rounded-lg border border-jarvis-blue/50 transition-smooth hover:border-jarvis-blue;
+  }
+
+  .btn-ghost {
+    @apply px-6 py-3 text-jarvis-blue hover:bg-jarvis-blue/10 font-semibold rounded-lg transition-smooth;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Prism code highlighting overrides */
+:root {
+  --prism-background: #151B3B;
+  --prism-foreground: #E2E8F0;
+  --prism-comment: #64748B;
+  --prism-string: #00E676;
+  --prism-literal: #FFB800;
+  --prism-keyword: #00A8FF;
+  --prism-function: #00D9FF;
+  --prism-deleted: #FF1744;
+  --prism-class: #FFB800;
+  --prism-builtin: #00D9FF;
+}
