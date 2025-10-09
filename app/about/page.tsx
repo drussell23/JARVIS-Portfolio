@@ -139,7 +139,7 @@ export default function AboutPage() {
           <section className="mb-12">
             <h2 className="text-3xl font-bold text-white mb-4">About Me</h2>
             <p className="text-dark-text leading-relaxed mb-4">
-              I'm Derek Russell, an AI engineer and computer engineering graduate from Cal Poly. My journey
+              I'm Derek J. Russell, an AI engineer and computer engineering graduate from Cal Poly. My journey
               to engineering wasn't conventional - it took 10 years, multiple setbacks, and an unwavering
               commitment to never give up.
             </p>
