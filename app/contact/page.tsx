@@ -106,14 +106,15 @@ export default function ContactPage() {
           <h2 className="text-2xl font-bold text-white mb-4">About Me</h2>
           <div className="space-y-4 text-dark-text leading-relaxed">
             <p>
-              I'm Derek Russell, an AI engineer who built JARVIS - a voice-controlled assistant
-              for macOS with computer vision and context-aware intelligence. I specialize in
-              performance optimization, machine learning systems, and building production-grade
-              AI applications.
+              I'm Derek Russell, an AI engineer and computer engineering graduate from Cal Poly.
+              My journey to engineering took 10 years - from restarting at community college to
+              graduating with a degree that I worked incredibly hard for. Every challenge taught
+              me persistence, adaptability, and the value of never giving up.
             </p>
             <p>
-              My work focuses on making AI assistants actually useful by combining voice control,
-              computer vision, and intelligent automation. I've achieved 95% CPU reductions,
+              I built JARVIS - a voice-controlled assistant for macOS with computer vision and
+              context-aware intelligence. I specialize in performance optimization, machine learning
+              systems, and building production-grade AI applications. I've achieved 95% CPU reductions,
               99.9% ML accuracy, and built self-healing systems that recover automatically from failures.
             </p>
             <p>
