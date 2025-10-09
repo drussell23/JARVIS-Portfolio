@@ -277,8 +277,8 @@ async def lifespan(app: FastAPI):
 The self-healing system adds minimal overhead:
 
 - **Memory**: ~5MB for monitoring and state
-- **CPU**: <0.1% during normal operation
-- **Latency**: Component switch takes <1 second
+- **CPU**: &lt;0.1% during normal operation
+- **Latency**: Component switch takes &lt;1 second
 - **Check interval**: Configurable (default: 60 seconds)
 
 When Rust components are healthy, you get the full performance benefit:
@@ -325,7 +325,7 @@ A self-healing system transforms how you think about reliability. Instead of pre
 The results speak for themselves:
 - **90% automatic recovery success rate**
 - **Zero manual intervention required**
-- **<1 second fallback time**
+- **&lt;1 second fallback time**
 - **10x performance when healthy, reliable performance when degraded**
 
 Building JARVIS to be self-healing wasn't just about convenience - it was essential for a system designed to operate autonomously. When you're not around to fix issues, the system needs to fix itself.
