@@ -18,10 +18,9 @@ const footerLinks = {
 }
 
 const socialLinks = [
-  { name: 'GitHub', icon: FaGithub, href: 'https://github.com/yourusername' },
-  { name: 'LinkedIn', icon: FaLinkedin, href: 'https://linkedin.com/in/yourusername' },
-  { name: 'Twitter', icon: FaTwitter, href: 'https://twitter.com/yourusername' },
-  { name: 'Email', icon: FaEnvelope, href: 'mailto:your.email@example.com' },
+  { name: 'GitHub', icon: FaGithub, href: 'https://github.com/drussell23' },
+  { name: 'LinkedIn', icon: FaLinkedin, href: 'https://www.linkedin.com/in/derek-j-russell/' },
+  { name: 'Email', icon: FaEnvelope, href: 'mailto:djamesr23@gmail.com' },
 ]
 
 export default function Footer() {
