@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getAllPostSlugs, getPostBySlug, getRelatedPosts } from '@/lib/blog'
-import { FaArrowLeft, FaCalendar, FaClock, FaTag } from 'react-icons/fa'
+import { FaArrowLeft, FaArrowRight, FaCalendar, FaClock, FaTag } from 'react-icons/fa'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 
 interface PageProps {
