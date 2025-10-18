@@ -152,7 +152,7 @@ export default function BlogPage() {
                 className="group card-glow overflow-hidden"
               >
                 {/* Cover Image or Placeholder */}
-                <div className="aspect-[16/9] bg-gradient-to-br from-jarvis-600/15 via-jarvis-cyan-600/15 to-jarvis-600/15 relative overflow-hidden">
+                <div className="aspect-[16/9] bg-gradient-to-br from-jarvis-600/20 via-jarvis-cyan-600/20 to-jarvis-600/20 relative overflow-hidden">
                   {post.coverImage ? (
                     <img
                       src={post.coverImage}
@@ -160,17 +160,24 @@ export default function BlogPage() {
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                   ) : (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center">
-                        <div className="w-16 h-16 mx-auto mb-3 rounded-2xl bg-gradient-jarvis/20 border border-jarvis-500/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                          <span className="text-4xl">
-                            {index === 0 ? '💡' : index === 1 ? '⚡' : index === 2 ? '🎯' : index === 3 ? '🔧' : index === 4 ? '🚀' : index === 5 ? '🧠' : index === 6 ? '👁️' : '✨'}
-                          </span>
+                    <>
+                      {/* Enhanced placeholder with patterns and large icon */}
+                      <div className="absolute inset-0 bg-circuit opacity-20" />
+                      <div className="absolute inset-0 bg-grid opacity-15" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-jarvis-600/30 via-transparent to-jarvis-cyan-600/30" />
+
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-center transform group-hover:scale-110 transition-transform duration-500">
+                          <div className="w-24 h-24 mx-auto mb-4 rounded-3xl bg-gradient-jarvis flex items-center justify-center shadow-glow animate-float">
+                            <span className="text-6xl">
+                              {index === 0 ? '💡' : index === 1 ? '⚡' : index === 2 ? '🎯' : index === 3 ? '🔧' : index === 4 ? '🚀' : index === 5 ? '🧠' : index === 6 ? '👁️' : '✨'}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </>
                   )}
-                  <div className="absolute inset-0 bg-grid opacity-10" />
+                  {post.coverImage && <div className="absolute inset-0 bg-grid opacity-10" />}
 
                   {/* Reading time overlay */}
                   <div className="absolute top-4 right-4 px-4 py-2 glass-strong rounded-xl text-xs text-white font-bold border border-jarvis-500/30 shadow-lg">
