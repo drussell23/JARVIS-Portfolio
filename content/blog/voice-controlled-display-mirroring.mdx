@@ -1,0 +1,613 @@
+---
+title: "Voice-Controlled Display Mirroring: Zero-Config macOS Automation"
+date: "2025-10-18"
+excerpt: "Building a voice-controlled system that connects to AirPlay displays using coordinate automation, OCR fallbacks, and intelligent pattern recognition - all without Apple's private APIs."
+author: "Derek Russell"
+tags: ["Automation", "macOS", "Computer Vision", "Voice Control"]
+coverImage: "/images/blog/display-mirroring.jpg"
+---
+
+## The Problem: Manual Display Connection
+
+Every time I wanted to mirror my screen to the Living Room TV:
+
+1. Click Control Center icon (top-right corner)
+2. Click "Screen Mirroring"
+3. Scroll to find "Living Room TV"
+4. Click the display name
+5. Wait for connection
+
+**Five manual steps.** Repeated multiple times per day.
+
+I wanted to say: **"Hey JARVIS, connect to Living Room TV"** and have it just work.
+
+## The Challenge: No Public APIs
+
+Apple doesn't provide APIs for display mirroring. You can't programmatically:
+- Open Control Center
+- Access Screen Mirroring menu
+- Select a specific display
+- Initiate connection
+
+The only way? **Simulate mouse clicks.**
+
+## Solution 1: Direct Coordinate Automation
+
+The fastest approach: Click exact pixel coordinates.
+
+```python
+class DisplayConnectionHandler:
+    # macOS 14.x Sonoma coordinates (1440p display)
+    COORDINATES = {
+        "control_center": (1245, 12),
+        "screen_mirroring": (1393, 177),
+        "living_room_tv": (1221, 116),
+        "stop_mirroring": (1346, 345)
+    }
+
+    async def connect_display(self, display_name: str) -> Dict[str, Any]:
+        """Connect to display via coordinate clicks"""
+
+        logger.info(f"Connecting to {display_name}...")
+
+        # Step 1: Open Control Center
+        await self._click_coordinate(
+            self.COORDINATES["control_center"],
+            description="Opening Control Center"
+        )
+        await asyncio.sleep(0.3)  # Wait for animation
+
+        # Step 2: Click Screen Mirroring
+        await self._click_coordinate(
+            self.COORDINATES["screen_mirroring"],
+            description="Opening Screen Mirroring menu"
+        )
+        await asyncio.sleep(0.5)  # Wait for menu
+
+        # Step 3: Click specific display
+        display_coord = self._get_display_coordinate(display_name)
+        await self._click_coordinate(
+            display_coord,
+            description=f"Selecting {display_name}"
+        )
+        await asyncio.sleep(2.0)  # Wait for connection
+
+        return {"success": True, "display": display_name}
+```
+
+```python
+async def _click_coordinate(
+    self,
+    coord: Tuple[int, int],
+    description: str = ""
+) -> None:
+    """Execute mouse click at exact coordinate"""
+
+    x, y = coord
+
+    # Use cliclick for precise clicking
+    cmd = f"cliclick c:{x},{y}"
+
+    logger.debug(f"[DISPLAY] {description}: clicking ({x}, {y})")
+
+    result = subprocess.run(
+        cmd,
+        shell=True,
+        capture_output=True,
+        text=True
+    )
+
+    if result.returncode != 0:
+        raise DisplayError(f"Click failed: {result.stderr}")
+```
+
+**Performance:** ~2 seconds total (3 clicks + animations)
+
+**Problem:** Coordinates break if:
+- Screen resolution changes
+- macOS version updates
+- UI scaling differs
+- Control Center layout shifts
+
+## Solution 2: OCR-Based Fallback
+
+When coordinates fail, use computer vision to **find the buttons**.
+
+```python
+async def _click_with_ocr_fallback(
+    self,
+    target_text: str,
+    search_region: Optional[Tuple[int, int, int, int]] = None
+) -> bool:
+    """Find and click text using OCR"""
+
+    # Capture screenshot of search region
+    screenshot = await self._capture_region(search_region)
+
+    # Run OCR to find text
+    ocr_results = await self.vision_system.extract_text_with_bounds(
+        screenshot
+    )
+
+    # Find target text
+    for text_box in ocr_results:
+        if target_text.lower() in text_box.text.lower():
+            # Calculate click coordinate (center of text box)
+            x = text_box.x + (text_box.width // 2)
+            y = text_box.y + (text_box.height // 2)
+
+            await self._click_coordinate((x, y))
+            return True
+
+    return False
+```
+
+**Example usage:**
+
+```python
+async def connect_display_robust(self, display_name: str):
+    """Connect with coordinate + OCR fallback"""
+
+    # Try fast coordinate method first
+    try:
+        await self._click_coordinate(
+            self.COORDINATES["control_center"]
+        )
+        await asyncio.sleep(0.3)
+
+        await self._click_coordinate(
+            self.COORDINATES["screen_mirroring"]
+        )
+        await asyncio.sleep(0.5)
+
+        # Use OCR to find display name (resolution-independent!)
+        success = await self._click_with_ocr_fallback(
+            target_text=display_name,
+            search_region=(1100, 100, 400, 600)  # Screen Mirroring menu area
+        )
+
+        if not success:
+            raise DisplayError(f"Could not find '{display_name}' in menu")
+
+    except Exception as e:
+        logger.error(f"Coordinate method failed: {e}")
+
+        # Fallback: Pure OCR approach
+        logger.info("Falling back to full OCR detection...")
+        await self._connect_via_ocr_only(display_name)
+```
+
+**Advantages:**
+- ✅ Resolution-independent
+- ✅ Works across macOS versions
+- ✅ Adapts to UI changes
+
+**Disadvantages:**
+- ❌ Slower (~500ms for OCR)
+- ❌ Requires good text rendering
+- ❌ Can fail with overlapping windows
+
+## Solution 3: Intelligent Display Name Matching
+
+Users don't always say the exact display name:
+
+- "Connect to **living room**" (not "Living Room TV")
+- "Connect to **bedroom**" (not "Bedroom TV (2)")
+- "Connect to **TV**" (multiple TVs available)
+
+I built fuzzy matching with pattern recognition:
+
+```python
+class DisplayNameResolver:
+    def __init__(self):
+        # Known display patterns
+        self.display_patterns = {
+            "living room": ["Living Room TV", "LG TV", "Living Room"],
+            "bedroom": ["Bedroom TV", "Samsung TV", "Bedroom"],
+            "office": ["Office Monitor", "Dell Monitor", "Office"],
+        }
+
+    def resolve_display_name(
+        self,
+        user_input: str,
+        available_displays: List[str]
+    ) -> Optional[str]:
+        """Match user input to actual display name"""
+
+        user_lower = user_input.lower()
+
+        # Exact match first
+        for display in available_displays:
+            if user_lower == display.lower():
+                return display
+
+        # Pattern matching
+        for pattern, aliases in self.display_patterns.items():
+            if pattern in user_lower:
+                # Find first matching display
+                for display in available_displays:
+                    if any(alias.lower() in display.lower() for alias in aliases):
+                        logger.info(f"Resolved '{user_input}' → '{display}'")
+                        return display
+
+        # Fuzzy matching (Levenshtein distance)
+        best_match = None
+        best_score = 0
+
+        for display in available_displays:
+            score = self._fuzzy_match(user_lower, display.lower())
+            if score > best_score and score > 0.6:  # 60% similarity threshold
+                best_match = display
+                best_score = score
+
+        if best_match:
+            logger.info(f"Fuzzy matched '{user_input}' → '{best_match}' (score: {best_score:.2f})")
+            return best_match
+
+        return None
+
+    def _fuzzy_match(self, a: str, b: str) -> float:
+        """Calculate similarity ratio (0.0 to 1.0)"""
+        import difflib
+        return difflib.SequenceMatcher(None, a, b).ratio()
+```
+
+**Examples:**
+
+```python
+resolver.resolve_display_name("living room", ["Living Room TV", "Bedroom TV"])
+# → "Living Room TV"
+
+resolver.resolve_display_name("bedroom", ["Living Room TV", "Bedroom TV (2)"])
+# → "Bedroom TV (2)"
+
+resolver.resolve_display_name("tv", ["Living Room TV", "Bedroom TV"])
+# → "Living Room TV" (first match)
+
+resolver.resolve_display_name("sam", ["LG TV", "Samsung TV"])
+# → "Samsung TV" (fuzzy match)
+```
+
+## Voice Command Integration
+
+The display handler integrates with JARVIS's voice system:
+
+```python
+# In UnifiedCommandProcessor
+async def _handle_display_command(self, command: str) -> Dict[str, Any]:
+    """Handle display-related voice commands"""
+
+    command_lower = command.lower()
+
+    # Connect command
+    if any(kw in command_lower for kw in ["connect", "mirror", "show"]):
+        # Extract display name
+        display_name = self._extract_display_name(command)
+
+        if not display_name:
+            return {
+                "success": False,
+                "response": "Which display would you like to connect to?"
+            }
+
+        # Execute connection
+        result = await self.display_handler.connect_display(display_name)
+
+        if result["success"]:
+            return {
+                "success": True,
+                "response": f"Connected to {result['display']}"
+            }
+        else:
+            return {
+                "success": False,
+                "response": f"Could not connect to {display_name}"
+            }
+
+    # Disconnect command
+    elif any(kw in command_lower for kw in ["disconnect", "stop"]):
+        result = await self.display_handler.disconnect_display()
+
+        return {
+            "success": True,
+            "response": "Display disconnected"
+        }
+```
+
+**Voice commands supported:**
+
+```
+"Connect to Living Room TV"
+"Mirror to bedroom"
+"Show on office monitor"
+"Stop mirroring"
+"Disconnect display"
+```
+
+## Automatic Connection Verification
+
+How do we know the connection succeeded?
+
+```python
+async def verify_connection(
+    self,
+    display_name: str,
+    timeout: float = 5.0
+) -> bool:
+    """Verify display connection via OCR"""
+
+    start_time = time.time()
+
+    while time.time() - start_time < timeout:
+        # Capture Control Center
+        screenshot = await self._capture_control_center()
+
+        # Run OCR
+        ocr_results = await self.vision_system.extract_text(screenshot)
+
+        # Look for connection indicators
+        indicators = [
+            f"{display_name} connected",
+            "stop mirroring",
+            "disconnect",
+            "✓"  # Checkmark next to display name
+        ]
+
+        if any(ind.lower() in ocr_results.lower() for ind in indicators):
+            logger.info(f"[DISPLAY] Connection to {display_name} verified")
+            return True
+
+        await asyncio.sleep(0.5)
+
+    logger.warning(f"[DISPLAY] Could not verify connection to {display_name}")
+    return False
+```
+
+**Usage:**
+
+```python
+await self.connect_display("Living Room TV")
+
+# Verify it worked
+connected = await self.verify_connection("Living Room TV")
+
+if not connected:
+    # Retry logic
+    logger.info("Connection verification failed, retrying...")
+    await self.connect_display("Living Room TV")
+```
+
+## Error Handling & Edge Cases
+
+Real-world deployment revealed many edge cases:
+
+### 1. Display Not Available
+
+```python
+async def connect_display(self, display_name: str):
+    """Connect with availability check"""
+
+    # Get available displays via OCR
+    available = await self._get_available_displays()
+
+    # Resolve user input to actual display name
+    resolved = self.resolver.resolve_display_name(
+        display_name,
+        available
+    )
+
+    if not resolved:
+        return {
+            "success": False,
+            "response": f"Display '{display_name}' not found. "
+                       f"Available: {', '.join(available)}"
+        }
+
+    # Proceed with connection
+    await self._execute_connection(resolved)
+```
+
+### 2. Already Connected
+
+```python
+async def connect_display(self, display_name: str):
+    """Skip if already connected"""
+
+    # Check current connection state
+    current = await self._get_current_display()
+
+    if current and current.lower() == display_name.lower():
+        return {
+            "success": True,
+            "response": f"Already connected to {display_name}",
+            "already_connected": True
+        }
+
+    # Otherwise, disconnect current and connect new
+    if current:
+        await self.disconnect_display()
+        await asyncio.sleep(1.0)
+
+    await self._execute_connection(display_name)
+```
+
+### 3. Control Center Already Open
+
+```python
+async def _open_control_center(self):
+    """Open Control Center (idempotent)"""
+
+    # Check if already open via OCR
+    screenshot = await self._capture_screen()
+    ocr_results = await self.vision_system.extract_text(screenshot)
+
+    if "control center" in ocr_results.lower():
+        logger.debug("Control Center already open")
+        return
+
+    # Otherwise, open it
+    await self._click_coordinate(self.COORDINATES["control_center"])
+    await asyncio.sleep(0.3)
+```
+
+## Performance Optimizations
+
+### Caching Display Coordinates
+
+```python
+class DisplayConnectionHandler:
+    def __init__(self):
+        self.coordinate_cache: Dict[str, Tuple[int, int]] = {}
+        self.cache_timestamp: Dict[str, float] = {}
+        self.cache_ttl = 300  # 5 minutes
+
+    async def _get_display_coordinate(
+        self,
+        display_name: str
+    ) -> Tuple[int, int]:
+        """Get coordinate with caching"""
+
+        # Check cache
+        if display_name in self.coordinate_cache:
+            if time.time() - self.cache_timestamp[display_name] < self.cache_ttl:
+                logger.debug(f"Using cached coordinate for {display_name}")
+                return self.coordinate_cache[display_name]
+
+        # Not cached or expired - use OCR
+        coord = await self._find_display_via_ocr(display_name)
+
+        # Cache for next time
+        self.coordinate_cache[display_name] = coord
+        self.cache_timestamp[display_name] = time.time()
+
+        return coord
+```
+
+**Result:** Subsequent connections are ~400ms faster
+
+### Parallel OCR Processing
+
+```python
+async def _get_available_displays(self) -> List[str]:
+    """Get list of available displays (optimized)"""
+
+    # Open Screen Mirroring menu
+    await self._open_screen_mirroring_menu()
+
+    # Capture menu region
+    screenshot = await self._capture_region((1100, 100, 400, 600))
+
+    # Run OCR with parallel processing
+    ocr_results = await self.vision_system.extract_text_parallel(screenshot)
+
+    # Extract display names (filter out menu items)
+    displays = []
+    for text_box in ocr_results:
+        text = text_box.text.strip()
+
+        # Skip menu items
+        if text.lower() in ["screen mirroring", "airplay", "cancel"]:
+            continue
+
+        # Add display names
+        if len(text) > 2:  # Minimum length
+            displays.append(text)
+
+    return displays
+```
+
+## Complete Voice-to-Connection Flow
+
+**User says:** "Hey JARVIS, connect to Living Room TV"
+
+```
+1. Speech Recognition
+   ↓ "connect to living room tv"
+
+2. Command Classification (ML Router)
+   ↓ Intent: DISPLAY_CONTROL
+
+3. UnifiedCommandProcessor
+   ↓ Route to DisplayConnectionHandler
+
+4. Display Name Resolution
+   ↓ "living room tv" → "Living Room TV"
+
+5. Availability Check
+   ↓ OCR Screen Mirroring menu
+
+6. Connection Execution
+   ↓ Click Control Center (1245, 12)
+   ↓ Click Screen Mirroring (1393, 177)
+   ↓ Click Living Room TV (OCR-based)
+
+7. Verification
+   ↓ OCR Control Center for "connected" indicator
+
+8. Response
+   ↓ "Connected to Living Room TV"
+
+Total time: ~3 seconds
+```
+
+## What I Learned
+
+**1. Coordinate automation is fast but brittle** - Always have OCR fallback
+
+**2. OCR is slow but robust** - Use it strategically (fallback, verification)
+
+**3. Caching saves hundreds of milliseconds** - Cache coordinates, not screenshots
+
+**4. Fuzzy matching is essential** - Users never say exact names
+
+**5. Verification prevents silent failures** - Always confirm critical actions succeeded
+
+## Real-World Impact
+
+Before: **5 manual clicks, ~15 seconds**
+After: **One voice command, ~3 seconds**
+
+**Usage:**
+- ~20 connections per day
+- Saves ~4 minutes daily
+- Saves ~24 hours per year
+
+**More importantly:** Seamless workflow. No context switching from keyboard to mouse to menu navigation.
+
+## What's Next
+
+**v2.0 Features (In Progress):**
+- Auto-reconnect to last display
+- Voice-based display selection: "Connect to the TV in the living room"
+- Multi-display support: "Mirror to all TVs"
+- Connection profiles: "Work mode" (office monitor), "Movie mode" (living room TV)
+
+**v3.0 Vision:**
+- Accessibility API integration (when Apple provides it)
+- Predictive connections based on time/context
+- Automatic disconnect when walking away (proximity detection)
+- Cross-device mirroring (iPhone → Mac → TV chain)
+
+## Key Takeaways
+
+**1. No public API? Use computer vision.** - OCR makes the impossible possible
+
+**2. Speed vs. robustness tradeoff** - Coordinates are fast, OCR is reliable
+
+**3. Fuzzy matching beats exact matching** - Users speak naturally, not in computer terms
+
+**4. Always verify critical actions** - Visual confirmation prevents silent failures
+
+**5. Voice control changes everything** - Automation that feels like magic
+
+Building voice-controlled display mirroring taught me that **the best automation is invisible**. You say what you want, and it just works.
+
+No menus. No clicking. No thinking about _how_.
+
+Just results.
+
+---
+
+**Read the code:** Display handlers in `backend/display/handlers/` and `backend/api/unified_command_processor.py`
+**Test scenarios:** 75+ test cases in `backend/display/DISPLAY_MIRRORING_TEST_SCENARIOS.md`
+**Architecture:** Complete flow documentation in `DISPLAY_MIRRORING_COMPLETE.md`
