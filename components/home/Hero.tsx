@@ -2,11 +2,11 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { HiPlay, HiArrowRight, HiLightningBolt, HiEye, HiCpu, HiChip } from 'react-icons/hi'
+import { HiPlay, HiArrowRight, HiLightningBolt, HiEye, HiChip } from 'react-icons/hi'
 
 export default function Hero() {
   const stats = [
-    { label: 'CPU Usage', value: '1-5%', icon: HiCpu, color: 'text-accent-green' },
+    { label: 'CPU Usage', value: '1-5%', icon: HiChip, color: 'text-accent-green' },
     { label: 'Parallel Speedup', value: '3x', icon: HiLightningBolt, color: 'text-jarvis-gold-400' },
     { label: 'ML Accuracy', value: '99.9%', icon: HiChip, color: 'text-jarvis-cyan-400' },
     { label: 'Visual Memory', value: '100', icon: HiEye, color: 'text-jarvis-400' },

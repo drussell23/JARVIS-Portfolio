@@ -3,14 +3,12 @@
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import {
-  HiCpu,
   HiLightningBolt,
   HiChip,
   HiClock,
   HiDatabase,
   HiTrendingDown,
-  HiCheckCircle,
-  HiBolt
+  HiCheckCircle
 } from 'react-icons/hi'
 import type { IconType } from 'react-icons'
 
@@ -33,7 +31,7 @@ const metrics: Metric[] = [
     suffix: '%',
     description: 'Down from 80-100% baseline',
     color: 'text-accent-green',
-    icon: HiCpu,
+    icon: HiChip,
     highlight: '95% Reduction'
   },
   {
@@ -53,7 +51,7 @@ const metrics: Metric[] = [
     suffix: 'ms',
     description: 'Real-time classification',
     color: 'text-jarvis-gold-400',
-    icon: HiBolt,
+    icon: HiLightningBolt,
     highlight: 'Ultra-Fast'
   },
   {
